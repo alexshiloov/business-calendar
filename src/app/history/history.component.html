@@ -1,0 +1,23 @@
+<div class="history-head">
+	Переносы дней
+</div>
+
+<div class="history">
+	<table *ngIf="historyDays" mat-table [dataSource]="historyDays">
+
+	  <!-- Name Column -->
+	  <ng-container matColumnDef="updateDate">
+	    <th mat-header-cell *matHeaderCellDef > Дата </th>
+	    <td mat-cell *matCellDef="let historyDay"> {{historyDay.updateDate}} </td>
+	  </ng-container>
+
+	  <!-- Weight Column -->
+	  <ng-container matColumnDef="row">
+	    <th mat-header-cell *matHeaderCellDef > Изменения </th>
+	    <td mat-cell *matCellDef="let historyDay"> {{historyDay.row}} </td>
+	  </ng-container>
+
+	  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+	  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+	</table>
+</div>

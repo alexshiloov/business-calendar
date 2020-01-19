@@ -1,0 +1,16 @@
+<div class="reservation-item-dialog">
+<h1 mat-dialog-title>Изменение типа дня</h1>
+<div>  Выберите дату, на которую будет осуществлен перенос {{data}}:</div>
+
+<mat-form-field>
+	<mat-select placeholder="Выберите тип дня" [(ngModel)]="dayTypeId" name="dayTypeId" >
+	  <mat-option *ngFor="let dayType of dayTypes" [value]="dayType.id" >
+	    {{dayType.name}}
+	  </mat-option>
+	</mat-select>	  
+</mat-form-field>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close class="mat-raised-button">Отмена</button>
+  <button [disabled]="!dayTypeId" style="margin-left: 10px"mat-button [mat-dialog-close]="true" class="mat-raised-button" cdkFocusInitial (click)="onConfirm()">Ок</button>
+</mat-dialog-actions>
+</div>

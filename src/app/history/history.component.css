@@ -1,0 +1,16 @@
+.history-head {
+  padding-left: 5px;
+  padding-top: 10px;
+  border-bottom: 2px solid black;
+}
+
+.history {
+  position: relative;
+  max-height: 570px;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  overflow-y: scroll;
+}
