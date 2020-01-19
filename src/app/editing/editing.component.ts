@@ -6,6 +6,7 @@ import {DayService} from '../service/day.service';
 import {FilterService} from '../service/filter.service';
 import {Day} from '../classes/day';
 import {IdName} from '../classes/id-name';
+import {DialogData} from '../classes/dialog-data';
 import {MovingComponent} from '../moving/moving.component';
 import {ChangingTypeComponent} from '../changing-type/changing-type.component';
 
@@ -55,16 +56,16 @@ export class EditingComponent implements OnInit {
   }
 
   onSelectAction(day, value) {
-  	debugger;
+  	let dialogData = new DialogData(day, this.dayService.filter);
   	if (value === MOVING_DAY_ID) {
   		this.dialog.open(MovingComponent, {
-  			data: day
+  			data: dialogData
 	    });
   	}
 
   	if (value === CHANGING_DAY_TYPE_ID) {
   		this.dialog.open(ChangingTypeComponent, {
-  			data: day
+  			data: dialogData
   		});
   	}
 

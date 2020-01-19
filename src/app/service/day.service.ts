@@ -6,7 +6,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import {Response} from '../classes/response';
 import {Filter} from '../classes/filter';
-
+import {HistoryService} from '../service/history.service';
+import {FilterService} from '../service/filter.service';
+import {DialogData} from '../classes/dialog-data';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +16,18 @@ import {Filter} from '../classes/filter';
 export class DayService {
 
   private dayUrl = 'http://localhost:80/php/getCalendarInfo.php';  // URL to web api
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
+  private changeDayTypeUrl = 'http://localhost:80/php/changeDateTypeId.php';  //
+  //private headers = new HttpHeaders({'Content-Type': 'application/json'});
 
   days: Day[];
+  filter: Filter;
   daysChange: Subject<Day[]> = new Subject<Day[]>();
   
-  constructor(private http: HttpClient) {
+  constructor(
+  	private http: HttpClient,
+  	private filterService: FilterService,
+  	private historyService: HistoryService
+  ) {
   	this.daysChange.subscribe((days) => {
         this.days = days
     }); 
@@ -39,9 +45,34 @@ export class DayService {
   }
 
   loadDays(filter: Filter) {
+  	this.filter = filter;
   	this.getDays(filter).subscribe((days) => {
   		this.daysChange.next(days);
   	});
+  }
+
+  changeDayType(dayTypeId: number, data: DialogData) {
+  	let days = this.days;
+  	let index = days.findIndex(day => day.id === data.day.id);
+  	let oldDayTypeId = days[index].dayTypeId;
+  	let dayType = this.filterService.dayTypes.find(dayType => dayType.id === dayTypeId);
+ 
+  	this.http.post(this.changeDayTypeUrl,
+        JSON.stringify({
+        	dayDate: days[index].date,
+        	oldDayTypeId: oldDayTypeId,
+        	newDayTypeId: dayTypeId,
+        	calendarTypeId: data.filter.calendarTypeId,
+        }))
+			.pipe(
+				catchError(this.handleError<Day[]>('getDays', []))
+			).subscribe((response) => {
+				this.historyService.loadHistory(data.filter);
+				days[index].dayTypeId = dayType.id;
+  				days[index].dayType = dayType.name;
+	        	console.log(data) 
+	    });
+  	
   }
 
    /**

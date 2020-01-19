@@ -21,6 +21,7 @@ export class FilterService {
   public selectedMonth: boolean = false;
   public selectedMonthChange: Subject<boolean> = new Subject<boolean>();
   public selectedCombosChange: Subject<boolean> = new Subject<boolean>();
+  public dayTypes: IdName[];
 
   constructor(private http: HttpClient) {
   	this.selectedCombosChange.subscribe((value) => {
@@ -29,6 +30,10 @@ export class FilterService {
 
     this.selectedMonthChange.subscribe((value) => {
         this.selectedMonth = value
+    }); 
+
+    this.getDayTypes().subscribe((types) => {
+        this.dayTypes = types
     }); 
   } 
 
@@ -62,7 +67,7 @@ export class FilterService {
 		);
   }
 
-   getCountries(): Observable<IdName[]> {
+  getCountries(): Observable<IdName[]> {
   	return this.http.get(this.countryUrl)
 	  	.pipe(
 	  		map((response: Response) => response.rows || []),

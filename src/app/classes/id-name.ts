@@ -1,4 +1,4 @@
 export class IdName {
-  id: number| string;
+  id: any;
   name: string;
 }

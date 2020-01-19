@@ -7,6 +7,7 @@ import {MatDialogModule} from '@angular/material';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import {MatInputModule} from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio';
 
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +24,7 @@ import {MatTableModule} from '@angular/material/table';
 import {MatRadioModule} from '@angular/material/radio';
 import { MovingComponent } from './moving/moving.component';
 import { ChangingTypeComponent } from './changing-type/changing-type.component';
+
 
 @NgModule({
   declarations: [
@@ -56,7 +58,13 @@ import { ChangingTypeComponent } from './changing-type/changing-type.component';
     // Remove it when a real server is ready to receive requests.
   ],
   entryComponents: [MovingComponent, ChangingTypeComponent],
-  providers: [MatSelectModule, MatListModule],
+  providers: [
+    MatSelectModule, 
+    MatListModule, 
+    {
+      provide: MAT_RADIO_DEFAULT_OPTIONS,
+      useValue: { color: 'primary' }
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

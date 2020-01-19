@@ -16,7 +16,7 @@ export class HistoryService {
   constructor(private http: HttpClient) {
   	this.historyChange.subscribe((days) => {
         this.historyDays = days
-    }); 
+    });
   }
 
   private historyUrl = 'http://localhost:80/php/getHistory.php';  //
@@ -25,6 +25,7 @@ export class HistoryService {
   };
 
   historyDays: History[];
+  loadingChange: Subject<boolean> = new Subject<boolean>();
   historyChange: Subject<History[]> = new Subject<History[]>();
 
   /** GET heroes from the server */
@@ -39,8 +40,10 @@ export class HistoryService {
   }
 
   loadHistory(filter: Filter) {
+  	this.loadingChange.next(true);
   	this.getHistory(filter).subscribe((days) => {
   		this.historyChange.next(days);
+  		this.loadingChange.next(false);
   	});
   }
 

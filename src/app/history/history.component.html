@@ -2,7 +2,7 @@
 	Переносы дней
 </div>
 
-<div class="history">
+<div class="history" *ngIf="!loading">
 	<table *ngIf="historyDays" mat-table [dataSource]="historyDays">
 
 	  <!-- Name Column -->
@@ -20,4 +20,8 @@
 	  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
 	  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 	</table>
+</div>
+<div class="mat-spinner" *ngIf="loading">
+	<mat-spinner *ngIf="loading"></mat-spinner>
+	<span *ngIf="loading">Подождите, идёт загрузка...</span>
 </div>

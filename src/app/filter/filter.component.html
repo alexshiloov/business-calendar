@@ -25,13 +25,18 @@
 	</mat-form-field>
 </div>
 <div>
-	<mat-list role="list" *ngIf="selectedWeekType && selectedYear && selectedCountry">
-		<mat-list-item role="listitem" *ngFor="let month of months">
-			<mat-radio-button color="primary" (change)="onChangeMonth(month)">
-				{{month.name }}
-			</mat-radio-button>
-		</mat-list-item>
-	</mat-list>
+	<mat-radio-group
+		  *ngIf="selectedWeekType && selectedYear && selectedCountry" 
+		  class="radio-group"
+		  [(ngModel)]="selectedMonth">
+	  <mat-radio-button 
+	  		class="radio-button" 
+	  		(change)="onChangeMonth(month)" 
+	  		*ngFor="let month of months"
+	  		 [value]="month.id">
+	      {{month.name}}
+	  </mat-radio-button>
+	</mat-radio-group>
 </div>
 <div class="mat-spinner" *ngIf="loading">
 	<mat-spinner *ngIf="loading"></mat-spinner>

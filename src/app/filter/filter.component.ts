@@ -20,7 +20,7 @@ export class FilterComponent implements OnInit {
   selectedCountry: string;
   selectedWeekType: number;
   selectedYear: number;
-  selectedMonth: number;
+  selectedMonth: string;
   edited: boolean = false;
   loading: boolean = false;
 
@@ -57,6 +57,8 @@ export class FilterComponent implements OnInit {
   onChangeCombo(item) {
     let selected = false;
     
+    this.selectedMonth = null;
+    this.filterService.selectedMonthChange.next(false);
     if (this.selectedCountry && this.selectedWeekType && this.selectedYear) {
       let filter = new Filter(this.selectedCountry, this.selectedWeekType, this.selectedYear);
       this.historyService.loadHistory(filter);

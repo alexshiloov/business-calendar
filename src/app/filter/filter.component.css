@@ -16,6 +16,19 @@ mat-form-field {
 	height: 30px;
 }
 
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.radio-button {
+  margin: 2px;
+}
+
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+	color: #11d740;
+}
 /*.my-list-1 .mat-list-item {
   height: 30px;
 }*/

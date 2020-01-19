@@ -10,10 +10,15 @@ import {History} from '../classes/history';
 })
 export class HistoryComponent implements OnInit {
 
+  loading: boolean = false;
   constructor(
   	private historyService: HistoryService,
   	private filterService: FilterService
-  ) { }
+  ) {
+  	this.historyService.loadingChange.subscribe((value) => {
+    	this.loading = value;
+    }); 
+  }
 
   historyDays: History[];
   displayedColumns: string[] = ['updateDate', 'row'];
