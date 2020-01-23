@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {HistoryService} from '../service/history.service';
 import {FilterService} from '../service/filter.service';
 import {History} from '../classes/history';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-history',
@@ -20,11 +22,16 @@ export class HistoryComponent implements OnInit {
     }); 
   }
 
-  historyDays: History[];
+  //historyDays: History[];
+  dataSource = new MatTableDataSource();
   displayedColumns: string[] = ['updateDate', 'row'];
+
+  @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
+	  this.dataSource.sort = sort;
+  }
   ngOnInit() {
   	this.historyService.historyChange.subscribe((days) => {
-    	this.historyDays = days
+    	this.dataSource = new MatTableDataSource(days);
 	}); 
   }
 

@@ -3,17 +3,17 @@
 </div>
 
 <div class="history" *ngIf="!loading">
-	<table *ngIf="historyDays" mat-table [dataSource]="historyDays">
+	<table *ngIf="dataSource.data.length" mat-table [dataSource]="dataSource" matSort>
 
 	  <!-- Name Column -->
 	  <ng-container matColumnDef="updateDate">
-	    <th mat-header-cell *matHeaderCellDef > Дата </th>
+	    <th mat-header-cell *matHeaderCellDef mat-sort-header> Дата </th>
 	    <td mat-cell *matCellDef="let historyDay"> {{historyDay.updateDate}} </td>
 	  </ng-container>
 
 	  <!-- Weight Column -->
 	  <ng-container matColumnDef="row">
-	    <th mat-header-cell *matHeaderCellDef > Изменения </th>
+	    <th mat-header-cell *matHeaderCellDef mat-sort-header> Изменения </th>
 	    <td mat-cell *matCellDef="let historyDay"> {{historyDay.row}} </td>
 	  </ng-container>
 

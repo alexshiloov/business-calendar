@@ -12,6 +12,10 @@ import {ChangingTypeComponent} from '../changing-type/changing-type.component';
 
 const MOVING_DAY_ID = 1;
 const CHANGING_DAY_TYPE_ID = 2;
+const ELEMENT_DATA = [
+  {date: 1, weekDay: 'Hydrogen', dayType: 1.0079, symbol: 'H'},
+  {date: 2, weekDay: 'Helium', dayType: 4.0026, symbol: 'He'}
+];
 
 @Component({
   selector: 'app-editing',
@@ -28,6 +32,7 @@ export class EditingComponent implements OnInit {
   days: Day[];
   selectedAction: any = null;
   selectedMonth: boolean = false;
+  dataSource = new MatTableDataSource();
 
   actions: IdName[] = [{
   	'id': 1,
@@ -36,23 +41,31 @@ export class EditingComponent implements OnInit {
 	'id': 2,
 	'name': 'изменить тип дня'  
   }];
+  
   displayedColumns: string[] = ['date', 'weekDay', 'dayType', 'action'];
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
+	  this.dataSource.sort = sort;
+  }
 
   ngOnInit() {
-  	if (this.dayService.days) {
+   	if (this.dayService.days) {
   		this.days = this.dayService.days;
-  	} else {
-  		this.dayService.daysChange.subscribe((days) => {
-        	this.days = days;
-    	}); 
-    }
-
+  		this.dataSource = new MatTableDataSource(this.days);
+  	}
+    this.dayService.daysChange.subscribe((days) => {
+    	this.days = days;
+     	this.dataSource = new MatTableDataSource(this.days);
+	}); 
+    
     this.selectedMonth = this.filterService.selectedMonth;
   	this.filterService.selectedMonthChange.subscribe((value) => {
         this.selectedMonth = value
     });
+  }
+
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   onSelectAction(day, value) {

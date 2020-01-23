@@ -11,9 +11,9 @@ import {MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio';
 
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
-import { EditingModule } from './editing/editing.module';
 import { AppComponent } from './app.component';
 import { FilterComponent } from './filter/filter.component';
+import { EditingComponent } from './editing/editing.component';
 import { HistoryComponent } from './history/history.component';
 import { ViewComponent } from './view/view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +29,7 @@ import { ChangingTypeComponent } from './changing-type/changing-type.component';
 @NgModule({
   declarations: [
     AppComponent,
+    EditingComponent,
     FilterComponent,
     HistoryComponent,
     ViewComponent,
@@ -39,7 +40,6 @@ import { ChangingTypeComponent } from './changing-type/changing-type.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    EditingModule,
     BrowserAnimationsModule,
     MatSelectModule,
     MatListModule,

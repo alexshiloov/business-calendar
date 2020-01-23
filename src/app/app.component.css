@@ -2,12 +2,16 @@
   float: left;
 }
 
-.left, .right {
-  width: 25%;
+.left{
+  width: 20%;
+}
+
+.right {
+  width: 35%
 }
 
 .middle {
-  width: 50%;
+  width: 45%;
 }
 
 /* Clear floats after the columns */
@@ -22,11 +26,11 @@ nav a {
   text-align: center;
   text-decoration: none;
   margin-top: 10px;
-  margin-left: 1%;
+  margin-left: 2%;
   display: inline-block;
   background-color: #eee;
   border-radius: 10px;
-  width: 30%;
+  width: 45%;
 }
 nav a:last-child {
 	margin-right: 1%;
@@ -36,11 +40,11 @@ nav a:visited, a:link {
   color: #334953;
 }
 nav a:hover {
-  color: #039be5;
+  color: #673ab7;
   background-color: #cfd8dc;
 }
 nav a.active {
-  color: #039be5;
+  color: #673ab7;
 }
 
 nav {

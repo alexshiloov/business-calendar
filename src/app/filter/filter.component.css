@@ -25,10 +25,3 @@ mat-form-field {
 .radio-button {
   margin: 2px;
 }
-
-.mat-radio-button.mat-accent .mat-radio-inner-circle {
-	color: #11d740;
-}
-/*.my-list-1 .mat-list-item {
-  height: 30px;
-}*/
