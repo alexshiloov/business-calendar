@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatDialog} from '@angular/material/dialog';
@@ -23,11 +23,12 @@ const ELEMENT_DATA = [
   styleUrls: ['./editing.component.css']
 })
 export class EditingComponent implements OnInit {
-  constructor( 
-  	private dayService: DayService, 
-  	private filterService: FilterService,
-  	public dialog: MatDialog
-  ) { }
+  constructor(
+    private dayService: DayService,
+    private filterService: FilterService,
+    public dialog: MatDialog
+  ) {
+  }
 
   days: Day[];
   selectedAction: any = null;
@@ -35,32 +36,32 @@ export class EditingComponent implements OnInit {
   dataSource = new MatTableDataSource();
 
   actions: IdName[] = [{
-  	'id': 1,
-  	'name': 'перенести'
+    'id': 1,
+    'name': 'перенести'
   }, {
-	'id': 2,
-	'name': 'изменить тип дня'  
+    'id': 2,
+    'name': 'изменить тип дня'
   }];
-  
+
   displayedColumns: string[] = ['date', 'weekDay', 'dayType', 'action'];
 
   @ViewChild(MatSort, {static: false}) set content(sort: MatSort) {
-	  this.dataSource.sort = sort;
+    this.dataSource.sort = sort;
   }
 
   ngOnInit() {
-   	if (this.dayService.days) {
-  		this.days = this.dayService.days;
-  		this.dataSource = new MatTableDataSource(this.days);
-  	}
+    if (this.dayService.days) {
+      this.days = this.dayService.days;
+      this.dataSource = new MatTableDataSource(this.days);
+    }
     this.dayService.daysChange.subscribe((days) => {
-    	this.days = days;
-     	this.dataSource = new MatTableDataSource(this.days);
-	}); 
-    
+      this.days = days;
+      this.dataSource = new MatTableDataSource(this.days);
+    });
+
     this.selectedMonth = this.filterService.selectedMonth;
-  	this.filterService.selectedMonthChange.subscribe((value) => {
-        this.selectedMonth = value
+    this.filterService.selectedMonthChange.subscribe((value) => {
+      this.selectedMonth = value;
     });
   }
 
@@ -69,21 +70,21 @@ export class EditingComponent implements OnInit {
   }
 
   onSelectAction(day, value) {
-  	let dialogData = new DialogData(day, this.dayService.filter);
-  	if (value === MOVING_DAY_ID) {
-  		this.dialog.open(MovingComponent, {
-  			data: dialogData
-	    });
-  	}
+    let dialogData = new DialogData(day, this.dayService.filter);
+    if (value === MOVING_DAY_ID) {
+      this.dialog.open(MovingComponent, {
+        data: dialogData
+      });
+    }
 
-  	if (value === CHANGING_DAY_TYPE_ID) {
-  		this.dialog.open(ChangingTypeComponent, {
-  			data: dialogData
-  		});
-  	}
+    if (value === CHANGING_DAY_TYPE_ID) {
+      this.dialog.open(ChangingTypeComponent, {
+        data: dialogData
+      });
+    }
 
-  	setTimeout(()=> {
-      this.selectedAction = null;  
+    setTimeout(() => {
+      this.selectedAction = null;
     });
   }
 

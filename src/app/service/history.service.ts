@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {IdName} from '../classes/id-name';
-import { catchError, map, tap } from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {Response} from '../classes/response';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Subject} from 'rxjs';
 import {Filter} from '../classes/filter';
 import {History} from '../classes/history';
 
@@ -14,14 +14,14 @@ import {History} from '../classes/history';
 export class HistoryService {
 
   constructor(private http: HttpClient) {
-  	this.historyChange.subscribe((days) => {
-        this.historyDays = days
+    this.historyChange.subscribe((days) => {
+      this.historyDays = days;
     });
   }
 
   private historyUrl = 'http://localhost:80/php/getHistory.php';  //
   httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
 
   historyDays: History[];
@@ -30,24 +30,25 @@ export class HistoryService {
 
   /** GET heroes from the server */
   getHistory(filter: Filter): Observable<History[]> {
-  	let url = this.historyUrl + '?countryId=' + filter.countryId + '&yearId=' + filter.yearId + '&calendarTypeId=' + filter.calendarTypeId;
+
+    let url = this.historyUrl + '?countryId=' + filter.countryId + '&yearId=' + filter.yearId + '&calendarTypeId=' + filter.calendarTypeId;
     return this.http.get(url)
       .pipe(
-      	map((response: Response) => response.rows || []),
+        map((response: Response) => response.rows || []),
         tap(_ => this.log('fetched days')),
         catchError(this.handleError<History[]>('getHistory', []))
       );
   }
 
   loadHistory(filter: Filter) {
-  	this.loadingChange.next(true);
-  	this.getHistory(filter).subscribe((days) => {
-  		this.historyChange.next(days);
-  		this.loadingChange.next(false);
-  	});
+    this.loadingChange.next(true);
+    this.getHistory(filter).subscribe((days) => {
+      this.historyChange.next(days);
+      this.loadingChange.next(false);
+    });
   }
 
-   /**
+  /**
    * Handle Http operation that failed.
    * Let the app continue.
    * @param operation - name of the operation that failed
@@ -69,6 +70,6 @@ export class HistoryService {
 
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
-    
+
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import {Component, OnInit, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {FilterService} from '../service/filter.service';
 import {DayService} from '../service/day.service';
@@ -13,24 +13,24 @@ import {DialogData} from '../classes/dialog-data';
 export class ChangingTypeComponent implements OnInit {
 
   constructor(
-  	@Inject(MAT_DIALOG_DATA) public data: DialogData,
-  	private filterService: FilterService,
-  	private dayService: DayService
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private filterService: FilterService,
+    private dayService: DayService
   ) {
-  	
+
   }
 
   dayTypes: IdName[];
   dayTypeId: number;
 
   ngOnInit() {
-  	this.filterService.getDayTypes().subscribe((types) => {
-        this.dayTypes = types
-    }); 
+    this.filterService.getDayTypes().subscribe((types) => {
+      this.dayTypes = types;
+    });
   }
 
   onConfirm() {
-  	this.dayService.changeDayType(this.dayTypeId, this.data);
+    this.dayService.changeDayType(this.dayTypeId, this.data);
   }
 
 }

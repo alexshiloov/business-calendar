@@ -1,4 +1,4 @@
 export class History {
   updateDate: string;
-  row: string
+  row: string;
 }

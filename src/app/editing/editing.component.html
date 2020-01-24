@@ -6,45 +6,46 @@
 		Элементы отсутствуют
 	</span>
 
-	<div class="editing-panel-table" *ngIf="days">
-		<mat-form-field>
-		  <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
-		</mat-form-field>
-		<table *ngIf="days" mat-table [dataSource]="dataSource" matSort>
+  <div class="editing-panel-table" *ngIf="days">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
+    </mat-form-field>
+    <table *ngIf="days" mat-table [dataSource]="dataSource" matSort>
 
-		  <!-- Name Column -->
-		  <ng-container matColumnDef="date">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> Число </th>
-		    <td mat-cell *matCellDef="let day"> {{day.date}} </td>
-		  </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Число</th>
+        <td mat-cell *matCellDef="let day"> {{day.date}} </td>
+      </ng-container>
 
-		  <!-- Weight Column -->
-		  <ng-container matColumnDef="weekDay">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> День недели </th>
-		    <td mat-cell *matCellDef="let day"> {{day.weekDay}} </td>
-		  </ng-container>
+      <!-- Weight Column -->
+      <ng-container matColumnDef="weekDay">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> День недели</th>
+        <td mat-cell *matCellDef="let day"> {{day.weekDay}} </td>
+      </ng-container>
 
-		  <!-- Symbol Column -->
-		  <ng-container matColumnDef="dayType">
-		    <th mat-header-cell *matHeaderCellDef mat-sort-header> Тип дня </th>
-		    <td mat-cell *matCellDef="let day"> {{day.dayType}} </td>
-		  </ng-container>
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="dayType">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Тип дня</th>
+        <td mat-cell *matCellDef="let day"> {{day.dayType}} </td>
+      </ng-container>
 
-		  <ng-container matColumnDef="action">
-		      <th mat-header-cell *matHeaderCellDef> Действия </th>
-		      <td mat-cell *matCellDef="let day">
-		          <mat-form-field class="table-form-field">
-		            <mat-select [(ngModel)]="selectedAction" placeholder="Введите действие" (selectionChange)="onSelectAction(day, $event.value)">       
-		              <mat-option *ngFor="let action of actions" [value]="action.id" >
-		                {{action.name}}
-		              </mat-option>
-		            </mat-select>
-		          </mat-form-field>
-		      </td>
-	       </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Действия</th>
+        <td mat-cell *matCellDef="let day">
+          <mat-form-field class="table-form-field">
+            <mat-select [(ngModel)]="selectedAction" placeholder="Введите действие"
+                        (selectionChange)="onSelectAction(day, $event.value)">
+              <mat-option *ngFor="let action of actions" [value]="action.id">
+                {{action.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </td>
+      </ng-container>
 
-		  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-		  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-		</table>
-	</div>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
 </div>

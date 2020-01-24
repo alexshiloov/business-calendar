@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FilterService} from '../service/filter.service';
 import {DayService} from '../service/day.service';
 import {HistoryService} from '../service/history.service';
@@ -28,20 +28,21 @@ export class FilterComponent implements OnInit {
     public filterService: FilterService,
     private dayService: DayService,
     private historyService: HistoryService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.loading = true;
-    this.filterService.getCountries().subscribe (countries => {
-      this.countries = countries
+    this.filterService.getCountries().subscribe(countries => {
+      this.countries = countries;
     });
     this.filterService.getCalendarTypes().subscribe(calendarTypes => {
       this.calendarTypes = calendarTypes;
     });
     this.filterService.getYears().subscribe(years => {
-      this.years = years
+      this.years = years;
     });
-   
+
     this.filterService.getMonths().subscribe(months => {
       this.months = months;
       this.loading = false;
@@ -56,7 +57,7 @@ export class FilterComponent implements OnInit {
 
   onChangeCombo(item) {
     let selected = false;
-    
+
     this.selectedMonth = null;
     this.filterService.selectedMonthChange.next(false);
     if (this.selectedCountry && this.selectedWeekType && this.selectedYear) {
