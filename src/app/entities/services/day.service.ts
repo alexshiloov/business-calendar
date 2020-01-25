@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Inject, Injectable} from '@angular/core';
 import {Day} from '../classes/day';
 import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -9,7 +9,9 @@ import {Filter} from '../classes/filter';
 import {HistoryService} from './history.service';
 import {FilterService} from './filter.service';
 import {DialogData} from '../classes/dialog-data';
-
+import {ManageDataService} from '../../common/entities/services/manage-data.service';
+import {MatDialogRef} from '@angular/material';
+import {ChangingTypeComponent} from '../components/editing/entities/components/changing-type/changing-type.component';
 @Injectable({
   providedIn: 'root'
 })
@@ -26,7 +28,8 @@ export class DayService {
   constructor(
     private http: HttpClient,
     private filterService: FilterService,
-    private historyService: HistoryService
+    private historyService: HistoryService,
+    private manageDataService: ManageDataService
   ) {
     this.daysChange.subscribe((days) => {
       this.days = days;
@@ -45,13 +48,16 @@ export class DayService {
   }
 
   loadDays(filter: Filter) {
+    this.manageDataService.indicateLoadStatus('start');
     this.filter = filter;
     this.getDays(filter).subscribe((days) => {
       this.daysChange.next(days);
+      this.manageDataService.indicateLoadStatus('end');
     });
   }
 
   changeDayType(dayTypeId: number, data: DialogData) {
+    this.manageDataService.indicateLoadStatus('start');
     let days = this.days;
     let index = days.findIndex(day => day.id === data.day.id);
     let oldDayTypeId = days[index].dayTypeId;
@@ -67,11 +73,11 @@ export class DayService {
       .pipe(
         catchError(this.handleError<Day[]>('getDays', []))
       ).subscribe((response) => {
-      this.historyService.loadHistory(data.filter);
-      days[index].dayTypeId = dayType.id;
-      days[index].dayType = dayType.name;
-      console.log(data);
-    });
+        this.manageDataService.indicateLoadStatus('end');
+        this.historyService.loadHistory(data.filter);
+        days[index].dayTypeId = dayType.id;
+        days[index].dayType = dayType.name;
+      });
 
   }
 

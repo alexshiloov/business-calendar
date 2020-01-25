@@ -13,3 +13,9 @@
     <app-history></app-history>
   </div>
 </div>
+<div *ngIf="(manageDataService.loadStatus$ | async) > 0"
+     class="loading-indicator">
+
+  <mat-spinner diameter="120" color="primary"></mat-spinner>
+  <span>Подождите, идёт загрузка...</span>
+</div>

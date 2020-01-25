@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {ViewComponent} from './view/view.component';
-import {EditingComponent} from './editing/editing.component';
+import {ViewComponent} from './entities/components/view/view.component';
+import {EditingComponent} from './entities/components/editing/editing.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/view', pathMatch: 'full'},

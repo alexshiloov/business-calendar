@@ -1,12 +1,13 @@
-<span class="span-block" *ngIf="!selectedMonth">
+<span class="span-block" *ngIf="!(filterService.hasSelectedMonth$ | async)">
 	Выберите элементы поиска слева
 </span>
-<div class="editing-panel" *ngIf="selectedMonth">
-	<span class="span-block" *ngIf="!days">
+<div class="editing-panel" *ngIf="(filterService.hasSelectedMonth$ | async)">
+	<span class="span-block" *ngIf="!dataSource.data.length && (manageDataService.loadStatus$ | async) == 0">
+<!--    TODO нормальный ngIf-->
 		Элементы отсутствуют
 	</span>
 
-  <div class="editing-panel-table" *ngIf="days">
+  <div class="editing-panel-table" *ngIf="dataSource.data.length">
     <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Поиск">
     </mat-form-field>

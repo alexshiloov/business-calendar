@@ -2,20 +2,17 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatDialog} from '@angular/material/dialog';
-import {DayService} from '../service/day.service';
-import {FilterService} from '../service/filter.service';
-import {Day} from '../classes/day';
-import {IdName} from '../classes/id-name';
-import {DialogData} from '../classes/dialog-data';
-import {MovingComponent} from '../moving/moving.component';
-import {ChangingTypeComponent} from '../changing-type/changing-type.component';
+import {DayService} from '../../services/day.service';
+import {FilterService} from '../../services/filter.service';
+import {Day} from '../../classes/day';
+import {IdName} from '../../classes/id-name';
+import {DialogData} from '../../classes/dialog-data';
+import {MovingComponent} from './entities/components/moving/moving.component';
+import {ChangingTypeComponent} from './entities/components/changing-type/changing-type.component';
+import {ManageDataService} from '../../../common/entities/services/manage-data.service';
 
 const MOVING_DAY_ID = 1;
 const CHANGING_DAY_TYPE_ID = 2;
-const ELEMENT_DATA = [
-  {date: 1, weekDay: 'Hydrogen', dayType: 1.0079, symbol: 'H'},
-  {date: 2, weekDay: 'Helium', dayType: 4.0026, symbol: 'He'}
-];
 
 @Component({
   selector: 'app-editing',
@@ -25,14 +22,14 @@ const ELEMENT_DATA = [
 export class EditingComponent implements OnInit {
   constructor(
     private dayService: DayService,
-    private filterService: FilterService,
+    public filterService: FilterService,
+    public manageDataService: ManageDataService,
     public dialog: MatDialog
   ) {
   }
 
   days: Day[];
   selectedAction: any = null;
-  selectedMonth: boolean = false;
   dataSource = new MatTableDataSource();
 
   actions: IdName[] = [{
@@ -58,11 +55,6 @@ export class EditingComponent implements OnInit {
       this.days = days;
       this.dataSource = new MatTableDataSource(this.days);
     });
-
-    this.selectedMonth = this.filterService.selectedMonth;
-    this.filterService.selectedMonthChange.subscribe((value) => {
-      this.selectedMonth = value;
-    });
   }
 
   applyFilter(filterValue: string) {
@@ -73,12 +65,14 @@ export class EditingComponent implements OnInit {
     let dialogData = new DialogData(day, this.dayService.filter);
     if (value === MOVING_DAY_ID) {
       this.dialog.open(MovingComponent, {
+        disableClose: true,
         data: dialogData
       });
     }
 
     if (value === CHANGING_DAY_TYPE_ID) {
       this.dialog.open(ChangingTypeComponent, {
+        disableClose: true,
         data: dialogData
       });
     }

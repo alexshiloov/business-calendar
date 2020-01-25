@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {FilterService} from '../service/filter.service';
-import {DayService} from '../service/day.service';
-import {HistoryService} from '../service/history.service';
-import {IdName} from '../classes/id-name';
-import {Filter} from '../classes/filter';
-import {Observable, of} from 'rxjs';
+import {FilterService} from '../../services/filter.service';
+import {DayService} from '../../services/day.service';
+import {HistoryService} from '../../services/history.service';
+import {IdName} from '../../classes/id-name';
+import {Filter} from '../../classes/filter';
+import {ManageDataService} from '../../../common/entities/services/manage-data.service';
 
 @Component({
   selector: 'app-filter',
@@ -21,18 +21,17 @@ export class FilterComponent implements OnInit {
   selectedWeekType: number;
   selectedYear: number;
   selectedMonth: string;
-  edited: boolean = false;
-  loading: boolean = false;
 
   constructor(
     public filterService: FilterService,
+    public manageDataService: ManageDataService,
     private dayService: DayService,
     private historyService: HistoryService
   ) {
   }
 
   ngOnInit() {
-    this.loading = true;
+    this.manageDataService.indicateLoadStatus('start');
     this.filterService.getCountries().subscribe(countries => {
       this.countries = countries;
     });
@@ -45,12 +44,12 @@ export class FilterComponent implements OnInit {
 
     this.filterService.getMonths().subscribe(months => {
       this.months = months;
-      this.loading = false;
+      this.manageDataService.indicateLoadStatus('end');
     });
   }
 
   onChangeMonth(item) {
-    this.filterService.selectedMonthChange.next(true);
+    this.filterService.indicateSelectedMonth(true);
     let filter = new Filter(this.selectedCountry, this.selectedWeekType, this.selectedYear, item.id);
     this.dayService.loadDays(filter);
   }
@@ -59,14 +58,14 @@ export class FilterComponent implements OnInit {
     let selected = false;
 
     this.selectedMonth = null;
-    this.filterService.selectedMonthChange.next(false);
+    this.filterService.indicateSelectedMonth(false);
     if (this.selectedCountry && this.selectedWeekType && this.selectedYear) {
       let filter = new Filter(this.selectedCountry, this.selectedWeekType, this.selectedYear);
       this.historyService.loadHistory(filter);
       selected = true;
     }
 
-    this.filterService.selectedCombosChange.next(selected);
+    this.filterService.indicateSelectedCombos(selected);
   }
 
 }

@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {IdName} from '../classes/id-name';
 import {catchError, map, tap} from 'rxjs/operators';
 import {Observable, of} from 'rxjs';
 import {Response} from '../classes/response';
@@ -7,13 +6,17 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Subject} from 'rxjs';
 import {Filter} from '../classes/filter';
 import {History} from '../classes/history';
+import {ManageDataService} from '../../common/entities/services/manage-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HistoryService {
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private manageDataService: ManageDataService
+  ) {
     this.historyChange.subscribe((days) => {
       this.historyDays = days;
     });
@@ -41,9 +44,11 @@ export class HistoryService {
   }
 
   loadHistory(filter: Filter) {
+    this.manageDataService.indicateLoadStatus('start');
     this.loadingChange.next(true);
     this.getHistory(filter).subscribe((days) => {
       this.historyChange.next(days);
+      this.manageDataService.indicateLoadStatus('end');
       this.loadingChange.next(false);
     });
   }

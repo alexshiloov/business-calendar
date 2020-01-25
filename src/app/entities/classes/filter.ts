@@ -1,8 +1,8 @@
 export class Filter {
-  countryId: string;
-  calendarTypeId: number;
-  yearId: number;
-  month: number | null;
+  public countryId: string;
+  public calendarTypeId: number;
+  public yearId: number;
+  public month: number | null;
 
   constructor(countryId: string, calendarTypeId: number, yearId: number, month: number = null) {
     this.countryId = countryId;

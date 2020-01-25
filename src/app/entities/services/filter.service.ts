@@ -2,9 +2,8 @@ import {Injectable} from '@angular/core';
 import {IdName} from '../classes/id-name';
 import {Response} from '../classes/response';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable, of, ReplaySubject} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,24 +16,39 @@ export class FilterService {
   private monthUrl = 'http://localhost:80/php/getMonth.php';  // URL to web api
   private dayTypeUrl = 'http://localhost:80/php/getWeekType.php';  // URL to web api
 
-  public selectedCombos: boolean = false;
-  public selectedMonth: boolean = false;
-  public selectedMonthChange: Subject<boolean> = new Subject<boolean>();
-  public selectedCombosChange: Subject<boolean> = new Subject<boolean>();
   public dayTypes: IdName[];
+  private _hasSelectedMonth$$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
+  private _hasSelectedCombos$$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
   constructor(private http: HttpClient) {
-    this.selectedCombosChange.subscribe((value) => {
-      this.selectedCombos = value;
-    });
-
-    this.selectedMonthChange.subscribe((value) => {
-      this.selectedMonth = value;
-    });
+    this._hasSelectedCombos$$.next(false);
+    this._hasSelectedMonth$$.next(false);
 
     this.getDayTypes().subscribe((types) => {
       this.dayTypes = types;
     });
+  }
+
+  /**
+   * Подписка на выбран ли месяц или нет
+   */
+  public get hasSelectedMonth$(): Observable<boolean> {
+    return this._hasSelectedMonth$$.asObservable();
+  }
+
+  public indicateSelectedMonth(value: boolean): void {
+    this._hasSelectedMonth$$.next(value);
+  }
+
+  /**
+   * Подписка на выбраны ли элементы из select в filter.component
+   */
+  public get hasSelectedCombos$(): Observable<boolean> {
+    return this._hasSelectedCombos$$.asObservable();
+  }
+
+  public indicateSelectedCombos(value: boolean): void {
+    this._hasSelectedCombos$$.next(value);
   }
 
   getDayTypes(): Observable<IdName[]> {

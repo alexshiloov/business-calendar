@@ -1,7 +1,7 @@
 import {Component, OnInit, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA} from '@angular/material/dialog';
 import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
-import {DialogData} from '../classes/dialog-data';
+import {DialogData} from '../../../../../classes/dialog-data';
 
 @Component({
   selector: 'app-moving',
@@ -15,7 +15,7 @@ export class MovingComponent implements OnInit {
     private dateAdapter: DateAdapter<any>) {
   }
 
-  selectedDate: string;
+  public selectedDate: string|null = null;
 
   ngOnInit() {
     this.dateAdapter.setLocale('ru-RU');

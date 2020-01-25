@@ -1,4 +1,4 @@
-<div class="filter-panel" *ngIf="!loading">
+<div class="filter-panel">
   <mat-form-field>
     <mat-label>Код</mat-label>
     <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onChangeCombo(country)">
@@ -38,8 +38,9 @@
     </mat-radio-button>
   </mat-radio-group>
 </div>
-<div class="mat-spinner" *ngIf="loading">
-  <mat-spinner *ngIf="loading"></mat-spinner>
-  <span *ngIf="loading">Подождите, идёт загрузка...</span>
+
+<div class="default-button" *ngIf="selectedWeekType && selectedYear && selectedCountry">
+  <button mat-button color="primary" class="mat-raised-button">Заполнить по умолчанию</button>
 </div>
+
 
