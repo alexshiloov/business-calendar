@@ -4,6 +4,7 @@ import {Response} from '../classes/response';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of, ReplaySubject} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
+import {NotificationService} from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class FilterService {
   private _hasSelectedMonth$$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   private _hasSelectedCombos$$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private _notificationService: NotificationService) {
     this._hasSelectedCombos$$.next(false);
     this._hasSelectedMonth$$.next(false);
 
@@ -54,19 +55,26 @@ export class FilterService {
   getDayTypes(): Observable<IdName[]> {
     return this.http.get(this.dayTypeUrl)
       .pipe(
-        map((response: Response) => response.rows || []),
-        tap(_ => this.log('fetched days')),
-        catchError(this.handleError<any[]>('getDayTypes', []))
+        map((response: Response) => {
+          if (!response.success) {
+            throw new Error();
+          }
+          return response.rows || [];  
+        }),
+        catchError(this.handleError<any[]>('Не удалось загрузить типы недель', []))
       );
   }
 
-  /** GET heroes from the server */
   getCalendarTypes(): Observable<IdName[]> {
     return this.http.get(this.calendarTypeUrl)
       .pipe(
-        map((response: Response) => response.rows || []),
-        tap(_ => this.log('fetched days')),
-        catchError(this.handleError<any[]>('getYears', []))
+        map((response: Response) => {
+          if (!response.success) {
+            throw new Error();
+          }
+          return response.rows || [];  
+        }),
+        catchError(this.handleError<any[]>('Не удалось получить типы календаря', []))
       );
   }
 
@@ -75,27 +83,39 @@ export class FilterService {
   getYears(): Observable<IdName[]> {
     return this.http.get(this.yearUrl)
       .pipe(
-        map((response: Response) => response.rows || []),
-        tap(_ => this.log('fetched days')),
-        catchError(this.handleError<any[]>('getYears', []))
+        map((response: Response) => {
+          if (!response.success) {
+            throw new Error();
+          }
+          return response.rows || [];  
+        }),
+        catchError(this.handleError<any[]>('Не удалось загрузить список годов', []))
       );
   }
 
   getCountries(): Observable<IdName[]> {
     return this.http.get(this.countryUrl)
       .pipe(
-        map((response: Response) => response.rows || []),
-        tap(_ => this.log('fetched days')),
-        catchError(this.handleError<any[]>('getYears', []))
+        map((response: Response) => {
+          if (!response.success) {
+            throw new Error();
+          }
+          return response.rows || [];  
+        }),
+        catchError(this.handleError<any[]>('Не удалось загрузить список стран', []))
       );
   }
 
   getMonths(): Observable<IdName[]> {
     return this.http.get(this.monthUrl)
       .pipe(
-        map((response: Response) => response.rows || []),
-        tap(_ => this.log('fetched days')),
-        catchError(this.handleError<any[]>('getYears', []))
+        map((response: Response) => {
+          if (!response.success) {
+            throw new Error();
+          }
+          return response.rows || [];  
+        }),
+        catchError(this.handleError<any[]>('Не удалось загрузить список месяцев', []))
       );
   }
 
@@ -105,22 +125,16 @@ export class FilterService {
    * @param operation - name of the operation that failed
    * @param result - optional value to return as the observable result
    */
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(msg: string, result?: T) {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
 
-      // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+      this._notificationService.show(msg);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
-  }
-
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-
   }
 }
