@@ -10,8 +10,7 @@ import {HistoryService} from './history.service';
 import {FilterService} from './filter.service';
 import {DialogData} from '../classes/dialog-data';
 import {ManageDataService} from '../../common/entities/services/manage-data.service';
-import {MatDialogRef} from '@angular/material';
-import {ChangingTypeComponent} from '../components/editing/entities/components/changing-type/changing-type.component';
+import {NotificationService} from './notification.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -29,7 +28,8 @@ export class DayService {
     private http: HttpClient,
     private filterService: FilterService,
     private historyService: HistoryService,
-    private manageDataService: ManageDataService
+    private manageDataService: ManageDataService,
+    private _notificationService: NotificationService
   ) {
     this.daysChange.subscribe((days) => {
       this.days = days;
@@ -41,9 +41,13 @@ export class DayService {
     let url = this.dayUrl + '?month=' + filter.month + '&countryId=' + filter.countryId + '&yearId=' + filter.yearId + '&calendarTypeId=' + filter.calendarTypeId;
     return this.http.get(url)
       .pipe(
-        map((response: Response) => response.rows || []),
-        tap(_ => this.log('fetched days')),
-        catchError(this.handleError<Day[]>('getDays', []))
+        map((response: Response) => {
+          if (!response.success) {
+            throw new Error();
+          }
+          return response.rows || [];
+        }),
+        catchError(this.handleError<any[]>('Не удалось загрузить информацию по дням', []))
       );
   }
 
@@ -71,9 +75,13 @@ export class DayService {
         calendarTypeId: data.filter.calendarTypeId,
       }))
       .pipe(
-        catchError(this.handleError<Day[]>('getDays', []))
-      ).subscribe((response) => {
+        catchError(this.handleError<Day[]>('Не получилось изменить тип дня', []))
+      ).subscribe((response: Response) => {
         this.manageDataService.indicateLoadStatus('end');
+        if (!response.success) {
+          this._notificationService.show('Не получилось изменить тип дня');
+          return;
+        }
         this.historyService.loadHistory(data.filter);
         days[index].dayTypeId = dayType.id;
         days[index].dayType = dayType.name;
@@ -81,20 +89,49 @@ export class DayService {
 
   }
 
+  moveDay(selectedDate: string, data: DialogData) {
+    this.manageDataService.indicateLoadStatus('start');
+    let days = this.days;
+    let index = days.findIndex(day => day.id === data.day.id);
+    let oldDate = days[index].date;
+    let dayTypeId = days[index].dayTypeId;
+
+    this.http.post(this.changeDayTypeUrl,
+      JSON.stringify({
+        newDayDate: days[index].date,
+        oldDayDate: oldDate,
+        oldDayTypeId: dayTypeId,
+        calendarTypeId: data.filter.calendarTypeId,
+      }))
+      .pipe(
+        catchError(this.handleError<Day[]>('Не получилось изменить тип дня', []))
+      ).subscribe((response: Response) => {
+      this.manageDataService.indicateLoadStatus('end');
+      if (!response.success) {
+        this._notificationService.show('Не получилось изменить тип дня');
+        return;
+      }
+      this.historyService.loadHistory(data.filter);
+      days[index].dayTypeId = dayType.id;
+      days[index].dayType = dayType.name;
+    });
+  }
+
   /**
    * Handle Http operation that failed.
    * Let the app continue.
-   * @param operation - name of the operation that failed
+   * @param msg
    * @param result - optional value to return as the observable result
    */
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(msg: string, result?: T) {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+      this._notificationService.show(msg);
+      this.manageDataService.indicateLoadStatus('end');
 
       // Let the app keep running by returning an empty result.
       return of(result as T);

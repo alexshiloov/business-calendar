@@ -59,7 +59,7 @@ export class FilterService {
           if (!response.success) {
             throw new Error();
           }
-          return response.rows || [];  
+          return response.rows || [];
         }),
         catchError(this.handleError<any[]>('Не удалось загрузить типы недель', []))
       );
@@ -72,7 +72,7 @@ export class FilterService {
           if (!response.success) {
             throw new Error();
           }
-          return response.rows || [];  
+          return response.rows || [];
         }),
         catchError(this.handleError<any[]>('Не удалось получить типы календаря', []))
       );
@@ -87,7 +87,7 @@ export class FilterService {
           if (!response.success) {
             throw new Error();
           }
-          return response.rows || [];  
+          return response.rows || [];
         }),
         catchError(this.handleError<any[]>('Не удалось загрузить список годов', []))
       );
@@ -100,7 +100,7 @@ export class FilterService {
           if (!response.success) {
             throw new Error();
           }
-          return response.rows || [];  
+          return response.rows || [];
         }),
         catchError(this.handleError<any[]>('Не удалось загрузить список стран', []))
       );
@@ -113,7 +113,7 @@ export class FilterService {
           if (!response.success) {
             throw new Error();
           }
-          return response.rows || [];  
+          return response.rows || [];
         }),
         catchError(this.handleError<any[]>('Не удалось загрузить список месяцев', []))
       );
@@ -122,7 +122,7 @@ export class FilterService {
   /**
    * Handle Http operation that failed.
    * Let the app continue.
-   * @param operation - name of the operation that failed
+   * @param msg
    * @param result - optional value to return as the observable result
    */
   private handleError<T>(msg: string, result?: T) {

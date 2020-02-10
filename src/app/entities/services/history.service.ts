@@ -7,6 +7,7 @@ import {Subject} from 'rxjs';
 import {Filter} from '../classes/filter';
 import {History} from '../classes/history';
 import {ManageDataService} from '../../common/entities/services/manage-data.service';
+import {NotificationService} from './notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class HistoryService {
 
   constructor(
     private http: HttpClient,
-    private manageDataService: ManageDataService
+    private manageDataService: ManageDataService,
+    private _notificationService: NotificationService
   ) {
     this.historyChange.subscribe((days) => {
       this.historyDays = days;
@@ -37,9 +39,14 @@ export class HistoryService {
     let url = this.historyUrl + '?countryId=' + filter.countryId + '&yearId=' + filter.yearId + '&calendarTypeId=' + filter.calendarTypeId;
     return this.http.get(url)
       .pipe(
-        map((response: Response) => response.rows || []),
+        map((response: Response) => {
+          if (!response.success) {
+            throw new Error();
+          }
+          return response.rows || [];
+        }),
         tap(_ => this.log('fetched days')),
-        catchError(this.handleError<History[]>('getHistory', []))
+        catchError(this.handleError<History[]>('Не удалось загрузить историю', []))
       );
   }
 
@@ -56,17 +63,17 @@ export class HistoryService {
   /**
    * Handle Http operation that failed.
    * Let the app continue.
-   * @param operation - name of the operation that failed
+   * @param msg
    * @param result - optional value to return as the observable result
    */
-  private handleError<T>(operation = 'operation', result?: T) {
+  private handleError<T>(msg: string, result?: T) {
     return (error: any): Observable<T> => {
 
       // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
 
       // TODO: better job of transforming error for user consumption
-      this.log(`${operation} failed: ${error.message}`);
+      this._notificationService.show(msg);
 
       // Let the app keep running by returning an empty result.
       return of(result as T);
