@@ -1,6 +1,6 @@
-<div class="reservation-item-dialog">
+<div class="item-dialog">
   <h1 mat-dialog-title>Изменение типа дня</h1>
-  <div> Выберите дату, на которую будет осуществлен перенос {{data}}:</div>
+  <div> Выберите новый тип дня для {{data.day.date}} ({{data.day.weekDay}}):</div>
 
   <mat-form-field>
     <mat-select placeholder="Выберите тип дня" [(ngModel)]="dayTypeId" name="dayTypeId">

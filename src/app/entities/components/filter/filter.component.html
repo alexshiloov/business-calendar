@@ -38,7 +38,7 @@
     </mat-radio-button>
   </mat-radio-group>
   <div class="default-button" *ngIf="selectedWeekType && selectedYear && selectedCountry">
-    <button mat-button color="primary" class="mat-raised-button">Заполнить по умолчанию</button>
+    <button mat-button color="primary" class="mat-raised-button" (click)="onDefaultLoad()">Заполнить по умолчанию</button>
   </div>
 </div>
 

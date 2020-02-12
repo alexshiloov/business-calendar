@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {IdName} from '../classes/id-name';
+import {Filter} from '../classes/filter';
 import {Response} from '../classes/response';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of, ReplaySubject} from 'rxjs';
@@ -16,18 +17,23 @@ export class FilterService {
   private calendarTypeUrl = 'http://localhost:80/php/getCalendarType.php';  // URL to web api
   private monthUrl = 'http://localhost:80/php/getMonth.php';  // URL to web api
   private dayTypeUrl = 'http://localhost:80/php/getWeekType.php';  // URL to web api
+  private defaultCalendarUrl = 'http://localhost:80/php/loadCalendar.php';  // URL to web api
 
   public dayTypes: IdName[];
   private _hasSelectedMonth$$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
   private _hasSelectedCombos$$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
 
-  constructor(private http: HttpClient, private _notificationService: NotificationService) {
-    this._hasSelectedCombos$$.next(false);
-    this._hasSelectedMonth$$.next(false);
+  constructor(
+    private http: HttpClient, 
+    private _notificationService: NotificationService
+  )
+  {
+      this._hasSelectedCombos$$.next(false);
+      this._hasSelectedMonth$$.next(false);
 
-    this.getDayTypes().subscribe((types) => {
-      this.dayTypes = types;
-    });
+      this.getDayTypes().subscribe((types) => {
+        this.dayTypes = types;
+      });
   }
 
   /**
@@ -118,6 +124,8 @@ export class FilterService {
         catchError(this.handleError<any[]>('Не удалось загрузить список месяцев', []))
       );
   }
+
+
 
   /**
    * Handle Http operation that failed.

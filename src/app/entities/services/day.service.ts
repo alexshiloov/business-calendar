@@ -18,6 +18,8 @@ export class DayService {
 
   private dayUrl = 'http://localhost:80/php/getCalendarInfo.php';  // URL to web api
   private changeDayTypeUrl = 'http://localhost:80/php/changeDateTypeId.php';  //
+  private transferDayUrl = 'http://localhost:80/php/transferDateTypeId.php';
+  private defaultCalendarUrl = 'http://localhost:80/php/loadCalendar.php';  // URL to web api
   //private headers = new HttpHeaders({'Content-Type': 'application/json'});
 
   days: Day[];
@@ -96,7 +98,7 @@ export class DayService {
     let oldDate = days[index].date;
     let dayTypeId = days[index].dayTypeId;
 
-    this.http.post(this.changeDayTypeUrl,
+    this.http.post(this.transferDayUrl,
       JSON.stringify({
         newDayDate: days[index].date,
         oldDayDate: oldDate,
@@ -104,18 +106,45 @@ export class DayService {
         calendarTypeId: data.filter.calendarTypeId,
       }))
       .pipe(
-        catchError(this.handleError<Day[]>('Не получилось изменить тип дня', []))
+        catchError(this.handleError<Day[]>('Не получилось перенести день', []))
       ).subscribe((response: Response) => {
-      this.manageDataService.indicateLoadStatus('end');
-      if (!response.success) {
-        this._notificationService.show('Не получилось изменить тип дня');
-        return;
-      }
-      this.historyService.loadHistory(data.filter);
-      days[index].dayTypeId = dayType.id;
-      days[index].dayType = dayType.name;
+          this.manageDataService.indicateLoadStatus('end');
+          if (!response.success) {
+            this._notificationService.show('Не получилось перенести день');
+            return;
+          }
+          this.historyService.loadHistory(data.filter);
+          this.loadDays(data.filter);
     });
   }
+
+
+   defaultLoad(filter: Filter) {
+      this.manageDataService.indicateLoadStatus('start');
+
+      this.http.post(
+          this.defaultCalendarUrl,
+          JSON.stringify({
+              calendarTypeId: filter.calendarTypeId,
+              year: filter.yearId,
+              countryId: filter.countryId,
+              loadAcceptFlag: 1
+          })
+      ).pipe(
+          catchError(this.handleError<any[]>('Загрузка по умолчанию не удалась'))
+      ).subscribe((response: Response) => {
+          this.manageDataService.indicateLoadStatus('end');
+          if (!response.success) {
+              this._notificationService.show('Загрузка по умолчанию не удалась');
+              return;
+          }
+          this.historyService.loadHistory(filter);
+          if (filter.month) {
+              this.loadDays(filter);
+          }
+      });
+  }
+
 
   /**
    * Handle Http operation that failed.
@@ -138,8 +167,4 @@ export class DayService {
     };
   }
 
-  /** Log a HeroService message with the MessageService */
-  private log(message: string) {
-
-  }
 }

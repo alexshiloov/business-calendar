@@ -1,6 +1,6 @@
-<div class="reservation-item-dialog">
+<div class="item-dialog">
   <h1 mat-dialog-title>Режим переноса</h1>
-  <div> Выберите дату, на которую будет осуществлен перенос {{data}}:</div>
+  <div> Выберите дату, на которую будет осуществлен перенос {{data.day.date}} ({{data.day.weekDay}}):</div>
 
   <mat-form-field>
     <input matInput [matDatepicker]="dp" [(ngModel)]="selectedDate" name="selectedDate" placeholder="Выберите дату">

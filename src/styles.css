@@ -1,6 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
+
+.item-dialog {
+	width: 500px;
+	display: flex;
+	justify-content: center;
+	flex-direction: column; 
+}
+
 .blue-snackbar {
   background: white;
   color: black;

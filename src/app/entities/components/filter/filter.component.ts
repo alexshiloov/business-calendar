@@ -5,6 +5,8 @@ import {HistoryService} from '../../services/history.service';
 import {IdName} from '../../classes/id-name';
 import {Filter} from '../../classes/filter';
 import {ManageDataService} from '../../../common/entities/services/manage-data.service';
+import {MatDialog} from '@angular/material/dialog';
+import {DefaultLoadComponent} from './entities/components/default-load/default-load.component';
 
 @Component({
   selector: 'app-filter',
@@ -23,6 +25,7 @@ export class FilterComponent implements OnInit {
   selectedMonth: string;
 
   constructor(
+    public dialog: MatDialog,
     public filterService: FilterService,
     public manageDataService: ManageDataService,
     private dayService: DayService,
@@ -66,6 +69,14 @@ export class FilterComponent implements OnInit {
     }
 
     this.filterService.indicateSelectedCombos(selected);
+  }
+
+  onDefaultLoad() {
+    let filter = new Filter(this.selectedCountry, this.selectedWeekType, this.selectedYear, parseInt(this.selectedMonth));
+    this.dialog.open(DefaultLoadComponent, {
+        disableClose: true,
+        data: filter
+    });
   }
 
 }

@@ -26,6 +26,7 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatButtonModule} from '@angular/material/button';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatIconModule} from '@angular/material/icon';
+import { DefaultLoadComponent } from './entities/components/filter/entities/components/default-load/default-load.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import {MatIconModule} from '@angular/material/icon';
     ViewComponent,
     MovingComponent,
     ChangingTypeComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    DefaultLoadComponent
   ],
   imports: [
     BrowserModule,
@@ -58,12 +60,14 @@ import {MatIconModule} from '@angular/material/icon';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatIconModule
-
-    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
   ],
-  entryComponents: [MovingComponent, ChangingTypeComponent, SnackbarComponent],
+  
+  entryComponents: [
+    MovingComponent, 
+    ChangingTypeComponent, 
+    SnackbarComponent, 
+    DefaultLoadComponent
+  ],
   providers: [
     MatSelectModule,
     MatListModule,
