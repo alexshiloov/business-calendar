@@ -1,45 +1,47 @@
-<div class="filter-panel">
-  <mat-form-field>
-    <mat-label>Код</mat-label>
-    <mat-select [(ngModel)]="selectedCountry" (selectionChange)="onChangeCombo(country)">
-      <mat-option *ngFor="let country of countries" [value]="country.id">
-        {{country.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Тип календаря</mat-label>
-    <mat-select [(ngModel)]="selectedWeekType" (selectionChange)="onChangeCombo(calendarType)">
-      <mat-option *ngFor="let calendarType of calendarTypes" [value]="calendarType.id">
-        {{calendarType.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Год</mat-label>
-    <mat-select [(ngModel)]="selectedYear" (selectionChange)="onChangeCombo(year)">
-      <mat-option *ngFor="let year of years" [value]="year.id">
-        {{year.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
+<form [formGroup]="filterForm" class="filter-panel">
+    <mat-form-field>
+        <mat-label>Код</mat-label>
+        <mat-select formControlName="country" (selectionChange)="onChangeCombo()">
+            <mat-option *ngFor="let country of countries" [value]="country.id">
+                {{country.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Тип календаря</mat-label>
+        <mat-select formControlName="weekType" (selectionChange)="onChangeCombo()">
+            <mat-option *ngFor="let calendarType of calendarTypes" [value]="calendarType.id">
+                {{calendarType.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Год</mat-label>
+        <mat-select formControlName="year" (selectionChange)="onChangeCombo()">
+            <mat-option *ngFor="let year of years" [value]="year.id">
+                {{year.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
 <div>
-  <mat-radio-group
-    *ngIf="selectedWeekType && selectedYear && selectedCountry"
-    class="radio-group"
-    [(ngModel)]="selectedMonth">
-    <mat-radio-button
-      class="radio-button"
-      (change)="onChangeMonth(month)"
-      *ngFor="let month of months"
-      [value]="month.id">
-      {{month.name}}
-    </mat-radio-button>
-  </mat-radio-group>
-  <div class="default-button" *ngIf="selectedWeekType && selectedYear && selectedCountry">
-    <button mat-button color="primary" class="mat-raised-button" (click)="onDefaultLoad()">Заполнить по умолчанию</button>
-  </div>
+    <mat-radio-group
+            *ngIf="filterFormIsValid"
+            class="radio-group"
+            [(ngModel)]="selectedMonth">
+        <mat-radio-button
+                class="radio-button"
+                (change)="onChangeMonth(month)"
+                *ngFor="let month of months"
+                [value]="month.id">
+            {{month.name}}
+        </mat-radio-button>
+    </mat-radio-group>
+
+    <div class="default-button" *ngIf="filterFormIsValid">
+        <button mat-button color="primary" class="mat-raised-button" (click)="onDefaultLoad()">Заполнить по умолчанию
+        </button>
+    </div>
 </div>
 
 

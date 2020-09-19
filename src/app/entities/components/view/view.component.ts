@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FilterService} from '../../services/filter.service';
+import {FilterService} from '../filter/entities/services/filter.service';
 
 @Component({
   selector: 'app-view',

@@ -9,7 +9,7 @@ import {MatInputModule} from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio';
 
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {FilterComponent} from './entities/components/filter/filter.component';
@@ -59,7 +59,8 @@ import { DefaultLoadComponent } from './entities/components/filter/entities/comp
     MatButtonModule,
     MatProgressSpinnerModule,
     MatSnackBarModule,
-    MatIconModule
+    MatIconModule,
+    ReactiveFormsModule
   ],
   
   entryComponents: [

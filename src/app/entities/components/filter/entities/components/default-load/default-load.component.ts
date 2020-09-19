@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {Filter} from '../../../../../classes/filter';
-import {DayService} from '../../../../../services/day.service';
+import {Filter} from '../../classes/filter';
+import {DayService} from '../../../../editing/entities/services/day.service';
 
 @Component({
   selector: 'app-default-load',

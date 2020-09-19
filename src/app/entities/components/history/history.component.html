@@ -1,23 +1,34 @@
 <div class="history-head">
-  Переносы дней
+    Переносы дней
 </div>
 
 <div class="history">
-  <table *ngIf="dataSource.data.length" mat-table [dataSource]="dataSource" matSort>
+    <div style="padding-top: 10px" *ngIf="!isFilterFormValid">
+         <span class="span-block">
+            Выберите элементы поиска слева
+        </span>
+    </div>
+    <div style="padding-top: 10px" *ngIf="!dataSource.data.length && loadCounter == 0 && isFilterFormValid">
+         <span class="span-block">
+             Элементы отсутствуют
+        </span>
+    </div>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="updateDate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Дата</th>
-      <td mat-cell *matCellDef="let historyDay"> {{historyDay.updateDate}} </td>
-    </ng-container>
+    <table *ngIf="dataSource.data.length" mat-table [dataSource]="dataSource" matSort>
 
-    <!-- Weight Column -->
-    <ng-container matColumnDef="row">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Изменения</th>
-      <td mat-cell *matCellDef="let historyDay"> {{historyDay.row}} </td>
-    </ng-container>
+        <!-- Name Column -->
+        <ng-container matColumnDef="updateDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Дата</th>
+            <td mat-cell *matCellDef="let historyDay"> {{historyDay.updateDate}} </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+        <!-- Weight Column -->
+        <ng-container matColumnDef="row">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Изменения</th>
+            <td mat-cell *matCellDef="let historyDay"> {{historyDay.row}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
 </div>
