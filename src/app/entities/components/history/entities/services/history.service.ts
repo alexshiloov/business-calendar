@@ -25,10 +25,6 @@ export class HistoryService {
     private _historyChange$$: BehaviorSubject<History[]> = new BehaviorSubject<History[]>([]);
     public history$: Observable<History[]> = this._historyChange$$.asObservable();
 
-    // tslint:disable-next-line:variable-name
-    private _filterFormValidChange$$: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
-    public filterFormValid$: Observable<boolean> = this._filterFormValidChange$$.asObservable();
-
     private historyUrl = 'http://10.100.200.31/business-calendar/api/api.php?act=History&method=getHistory';  //
     httpOptions = {
         headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -39,9 +35,5 @@ export class HistoryService {
         // tslint:disable-next-line:max-line-length
         const url = this.historyUrl + '&stateId=' + filter.countryId + '&year=' + filter.yearId + '&weekTypeId=' + filter.calendarTypeId;
         this._httpRequestService.getData(url, this._historyChange$$, 'Не удалось загрузить историю');
-    }
-
-    setFilterFormIsValid(value: boolean): void {
-        this._filterFormValidChange$$.next(value);
     }
 }

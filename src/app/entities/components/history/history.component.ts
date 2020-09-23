@@ -4,6 +4,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {History} from './entities/classes/history';
 import {ManageDataService} from '../../../common/entities/services/manage-data.service';
+import {FilterService} from '../filter/entities/services/filter.service';
 
 @Component({
     selector: 'app-history',
@@ -15,6 +16,8 @@ export class HistoryComponent implements OnInit {
     constructor(
         // tslint:disable-next-line:variable-name
         private _historyService: HistoryService,
+        // tslint:disable-next-line:variable-name
+        private _filterService: FilterService,
         // tslint:disable-next-line:variable-name
         private _manageDataService: ManageDataService
     ) {}
@@ -33,7 +36,7 @@ export class HistoryComponent implements OnInit {
             this.dataSource = new MatTableDataSource(historyDays);
         });
 
-        this._historyService.filterFormValid$.subscribe((value: boolean) => {
+        this._filterService.filterFormValid$.subscribe((value: boolean) => {
             this.isFilterFormValid = value;
         });
 

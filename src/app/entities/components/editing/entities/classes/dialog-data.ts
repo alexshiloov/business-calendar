@@ -1,5 +1,5 @@
-import {Day} from '../components/editing/entities/classes/day';
-import {Filter} from '../components/filter/entities/classes/filter';
+import {Day} from './day';
+import {Filter} from '../../../filter/entities/classes/filter';
 
 export class DialogData {
     day: Day;

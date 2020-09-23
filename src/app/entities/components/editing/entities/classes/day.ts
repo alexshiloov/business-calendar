@@ -1,7 +1,8 @@
+import {IdName} from '../../../../../common/entities/classes/id-name';
+
 export class Day {
   id: number;
-  dayTypeId: number;
   date: string;
   weekDay: string;
-  dayType: string;
+  dayType: IdName;
 }

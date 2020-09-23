@@ -3,13 +3,13 @@ import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatDialog} from '@angular/material/dialog';
 import {DayService} from './entities/services/day.service';
-import {FilterService} from '../filter/entities/services/filter.service';
 import {Day} from './entities/classes/day';
 import {IdName} from '../../../common/entities/classes/id-name';
-import {DialogData} from '../../classes/dialog-data';
+import {DialogData} from './entities/classes/dialog-data';
 import {MovingComponent} from './entities/components/moving/moving.component';
 import {ChangingTypeComponent} from './entities/components/changing-type/changing-type.component';
 import {ManageDataService} from '../../../common/entities/services/manage-data.service';
+import {FilterService} from '../filter/entities/services/filter.service';
 
 const MOVING_DAY_ID = 1;
 const CHANGING_DAY_TYPE_ID = 2;
@@ -21,18 +21,21 @@ const CHANGING_DAY_TYPE_ID = 2;
 })
 export class EditingComponent implements OnInit {
     constructor(
-        private dayService: DayService,
-        public filterService: FilterService,
+        // tslint:disable-next-line:variable-name
+        private _dayService: DayService,
+        // tslint:disable-next-line:variable-name
+        private _filterService: FilterService,
         public manageDataService: ManageDataService,
         public dialog: MatDialog
     ) {
     }
 
-    days: Day[];
-    selectedAction: any = null;
-    dataSource = new MatTableDataSource();
+    public days: Day[];
+    public isSelectedMonth: boolean;
+    public selectedAction: any = null;
+    public dataSource = new MatTableDataSource();
 
-    actions: IdName[] = [{
+    public actions: IdName[] = [{
         id: 1,
         name: 'перенести'
     }, {
@@ -47,13 +50,12 @@ export class EditingComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.dayService.days) {
-            this.days = this.dayService.days;
-            this.dataSource = new MatTableDataSource(this.days);
-        }
-        this.dayService.daysChange.subscribe((days) => {
+        this._dayService.days$.subscribe((days: Day[]) => {
             this.days = days;
             this.dataSource = new MatTableDataSource(this.days);
+        });
+        this._filterService.isSelectedMonth$.subscribe((value: boolean) => {
+            this.isSelectedMonth = value;
         });
     }
 
@@ -62,7 +64,7 @@ export class EditingComponent implements OnInit {
     }
 
     onSelectAction(day, value) {
-        let dialogData = new DialogData(day, this.dayService.filter);
+        const dialogData = new DialogData(day, this._filterService.filter);
         if (value === MOVING_DAY_ID) {
             this.dialog.open(MovingComponent, {
                 disableClose: true,

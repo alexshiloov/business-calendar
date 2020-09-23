@@ -3,7 +3,7 @@
   <div> Выберите новый тип дня для {{data.day.date}} ({{data.day.weekDay}}):</div>
 
   <mat-form-field>
-    <mat-select placeholder="Выберите тип дня" [(ngModel)]="dayTypeId" name="dayTypeId">
+    <mat-select placeholder="Выберите тип дня" [(ngModel)]="selectedDayTypeId" name="dayTypeId">
       <mat-option *ngFor="let dayType of dayTypes" [value]="dayType.id">
         {{dayType.name}}
       </mat-option>
@@ -11,7 +11,7 @@
   </mat-form-field>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close class="mat-raised-button">Отмена</button>
-    <button [disabled]="!dayTypeId" style="margin-left: 10px" mat-button [mat-dialog-close]="true"
+    <button [disabled]="!selectedDayTypeId" style="margin-left: 10px" mat-button [mat-dialog-close]="true"
             color="primary" class="mat-raised-button" cdkFocusInitial (click)="onConfirm()">Ок
     </button>
   </mat-dialog-actions>

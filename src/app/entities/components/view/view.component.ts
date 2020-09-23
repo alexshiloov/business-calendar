@@ -1,12 +1,23 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FilterService} from '../filter/entities/services/filter.service';
 
 @Component({
-  selector: 'app-view',
-  templateUrl: './view.component.html',
-  styleUrls: ['./view.component.css']
+    selector: 'app-view',
+    templateUrl: './view.component.html',
+    styleUrls: ['./view.component.css']
 })
-export class ViewComponent {
+export class ViewComponent implements OnInit {
 
-  constructor(private filterService: FilterService) { }
+    constructor(
+        // tslint:disable-next-line:variable-name
+        private _filterService: FilterService
+    ) {}
+
+    public isFilterFormValid = false;
+
+    ngOnInit() {
+        this._filterService.filterFormValid$.subscribe((value: boolean) => {
+            this.isFilterFormValid = value;
+        });
+    }
 }

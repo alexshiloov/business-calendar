@@ -1,6 +1,6 @@
-<div *ngIf="(filterService.hasSelectedCombos$ | async)">
-	<iframe style="position: absolute; width: 45%; height: 100%; border: none" src="http://www.africau.edu/images/default/sample.pdf"></iframe>
+<div *ngIf="isFilterFormValid" class="pdf-panel">
+	<iframe style="position: absolute; width: 100%; height: 100%; border: none" src="http://www.africau.edu/images/default/sample.pdf"></iframe>
 </div>
-<span class="span-block" *ngIf="!(filterService.hasSelectedCombos$ | async)">
+<span class="span-block" *ngIf="!isFilterFormValid">
 	Выберите элементы поиска слева
 </span>

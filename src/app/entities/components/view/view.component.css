@@ -1,5 +1,12 @@
 .span-block {
-  display: block;	
-  padding-left: 5px;
-  padding-top: 10px;
+    display: block;
+    padding-left: 5px;
+    padding-top: 10px;
+}
+
+.pdf-panel {
+    display: block;
+    position: relative;
+    overflow: auto;
+    height: calc(100vh - 60px);
 }

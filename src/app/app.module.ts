@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatListModule} from '@angular/material/list';
 import {MatSortModule} from '@angular/material/sort';
-import {MatDialogModule} from '@angular/material';
+import {MAT_DATE_FORMATS, MatDialogModule} from '@angular/material';
 import {MatDatepickerModule, MatNativeDateModule} from '@angular/material';
 import {MatInputModule} from '@angular/material';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
@@ -28,6 +28,17 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatIconModule} from '@angular/material/icon';
 import { DefaultLoadComponent } from './entities/components/filter/entities/components/default-load/default-load.component';
 
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'LL'
+  },
+  display: {
+    dateInput: 'DD.MM.YYYY',
+    monthYearLabel: 'YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'YYYY'
+  }
+};
 
 @NgModule({
   declarations: [
@@ -72,6 +83,10 @@ import { DefaultLoadComponent } from './entities/components/filter/entities/comp
   providers: [
     MatSelectModule,
     MatListModule,
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: MY_FORMATS
+    },
     {
       provide: MAT_RADIO_DEFAULT_OPTIONS,
       useValue: {color: 'primary'}

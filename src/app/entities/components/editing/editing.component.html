@@ -1,9 +1,8 @@
-<span class="span-block" *ngIf="!(filterService.hasSelectedMonth$ | async)">
+<span class="span-block" *ngIf="!isSelectedMonth">
 	Выберите элементы поиска слева
 </span>
-<div class="editing-panel" *ngIf="(filterService.hasSelectedMonth$ | async)">
+<div class="editing-panel" *ngIf="(isSelectedMonth)">
 	<span class="span-block" *ngIf="!dataSource.data.length && (manageDataService.loadStatus$ | async) == 0">
-<!--    TODO нормальный ngIf-->
 		Элементы отсутствуют
 	</span>
 
@@ -28,7 +27,7 @@
             <!-- Symbol Column -->
             <ng-container matColumnDef="dayType">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> Тип дня</th>
-                <td mat-cell *matCellDef="let day"> {{day.dayType}} </td>
+                <td mat-cell *matCellDef="let day"> {{day.dayType.name}} </td>
             </ng-container>
 
             <ng-container matColumnDef="action">

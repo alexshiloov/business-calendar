@@ -22,13 +22,15 @@ export class FilterComponent implements OnInit {
     public calendarTypes: IdName[];
     public years: IdName[];
     public months: IdName[];
-    selectedMonth: string;
+    public selectedMonth: string;
 
     constructor(
         public dialog: MatDialog,
         // tslint:disable-next-line:variable-name
         private _filterService: FilterService,
-        private dayService: DayService,
+        // tslint:disable-next-line:variable-name
+        private _dayService: DayService,
+        // tslint:disable-next-line:variable-name
         private _historyService: HistoryService
     ) {
     }
@@ -72,17 +74,19 @@ export class FilterComponent implements OnInit {
 
     onChangeMonth(item) {
         // this.filterService.indicateSelectedMonth(true);
-        // let filter = new Filter(this.selectedCountry, this.selectedWeekType, this.selectedYear, item.id);
-        // this.dayService.loadDays(filter);
+        const filter = new Filter(this.country.value, this.weekType.value, this.year.value, item.id);
+        this._filterService.setMonthIsSelected(true);
+        this._dayService.loadDays(filter);
     }
 
     onChangeCombo() {
         if (this.filterForm.valid) {
             // @ts-ignore
             const filter = new Filter(this.country.value, this.weekType.value, this.year.value);
+            this._filterService.setFilter(filter);
             this._historyService.loadHistory(filter);
         }
-        this._historyService.setFilterFormIsValid(this.filterForm.valid);
+        this._filterService.setFilterFormIsValid(this.filterForm.valid);
     }
 
     onDefaultLoad() {

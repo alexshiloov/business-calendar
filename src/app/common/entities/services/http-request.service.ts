@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {Response} from '../classes/response';
 import {HttpClient} from '@angular/common/http';
@@ -35,6 +35,18 @@ export class HttpRequestService {
                     this._manageDataService.indicateLoadStatus('end');
                     subject.next(response.rows);
                 }
+            );
+    }
+
+    saveData(url: string, dataJson: string, errorMsg: string): Observable<any> {
+        this._manageDataService.indicateLoadStatus('start');
+        return this._http.post(url, dataJson)
+            .pipe(
+                catchError(err => {
+                    this._notificationService.show(errorMsg);
+                    this._manageDataService.indicateLoadStatus('end');
+                    return throwError(err);
+                })
             );
     }
 }
